@@ -27,13 +27,30 @@ int main(int argc, char *argv[])
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
-
+    char arr[50][50];
     // Parse the commands provided using argc and argv
 
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument
+        char *token;
+        
+        token = strtok(buffer,"\n");
+	    token = strtok(token," ");
+	    sprintf(command,"%s",token);
+
+        int counter = 0;
+	    while(token != NULL)
+	    {
+		    sprintf(arr[counter],"%s",token);
+		    //printf("Token %d %s \n", counter, arr[counter]);
+		    counter++;
+		    token = strtok(NULL, " ");
+	    }	
+        sprintf(command, "%s", arr[0]);
+        
+            
 
         // Check the command and execute the operations for each command
         // cd command -- change the current directory
@@ -43,6 +60,21 @@ int main(int argc, char *argv[])
         }
 
         // other commands here...
+        else if (strcmp(command, "help") == 0)
+        {
+            FILE* file=fopen("readme", "r");
+		char c= fgetc(file);
+		while (c != EOF)
+    		{
+       		 printf ("%c", c);
+        	 c = fgetc(file);
+    		}
+		fclose(file);
+        }
+	else if (strcmp(command, "echo") == 0)
+	{
+		printf("%s",arr[1]);
+	}
         
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0)
